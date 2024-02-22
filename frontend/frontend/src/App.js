@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './App.css';
-import Contacts from "./components/Contacts";
-import ContactLoadingComponent from "./components/ContactLoading";
+import Contacts from "./components/contacts";
+import ContactLoadingComponent from "./components/contactLoading";
 
 function App() {
   const ContactLoading = ContactLoadingComponent(Contacts);

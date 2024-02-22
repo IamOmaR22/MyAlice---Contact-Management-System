@@ -21,6 +21,15 @@ const Header = () => {
           >
             Home
           </MuiLink>
+          <MuiLink
+            component={RouterLink}
+            to="/create"
+            variant="button"
+            color="inherit"
+            style={{ margin: '0 10px', textDecoration: 'none' }}
+          >
+            Add Contact
+          </MuiLink>
           <Button
             component={RouterLink}
             to="/register"

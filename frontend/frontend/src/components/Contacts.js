@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Grid, Typography, Container } from "@mui/material";
+import { Card, CardContent, CardMedia, Grid, Typography, Container, Link } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const CardGrid = styled(Container)(({ theme }) => ({
@@ -30,6 +30,11 @@ const Contacts = (props) => {
         <Grid container spacing={4}>
           {contacts.map((contact) => (
             <Grid item key={contact.id} xs={12} sm={6} md={4}>
+                <Link
+                  // href={`/{contact.slug}`}
+                  href={`/${contact.slug}`}
+                  underline="none" 
+                  color="textPrimary">
               <StyledCard>
                 <StyledCardMedia
                   image="https://source.unsplash.com/random"
@@ -50,6 +55,7 @@ const Contacts = (props) => {
                   </Typography>
                 </StyledCardContent>
               </StyledCard>
+              </Link>
             </Grid>
           ))}
         </Grid>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../axios';
+import axiosInstance from '../../axios';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';

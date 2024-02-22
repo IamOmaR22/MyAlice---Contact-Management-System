@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axiosInstance from '../axios';
+import axiosInstance from '../../axios';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,37 +13,43 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-const SignIn = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: '', password: '' });
-  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({ email: '', username: '', password: '' });
+  const [error, setError] = useState({ email: '', username: '', password: '', general: '' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError({ ...error, [e.target.name]: '' });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('token/', {
+      const response = await axiosInstance.post(`user/register/`, {
         email: formData.email,
+        user_name: formData.username,
         password: formData.password,
       });
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-      axiosInstance.defaults.headers['Authorization'] =
-        'JWT ' + localStorage.getItem('access_token');
-      navigate('/');
+      navigate('/login'); // Navigate to login page after successful signup
+      console.log(response);
     } catch (error) {
-      if (error.response) {
-        // Request was made but server responded with status outside of 2xx
-        setError(error.response.data.detail);
-      } else if (error.request) {
-        // Request was made but no response was received
-        setError('An error occurred. Please try again later.');
+      if (error.response && error.response.status === 400) {
+        const errorData = error.response.data;
+        if (errorData.email) {
+          setError({ ...error, email: errorData.email[0] });
+        }
+        if (errorData.user_name) {
+          setError({ ...error, username: errorData.user_name[0] });
+        }
+        if (errorData.password) {
+          setError({ ...error, password: errorData.password[0] });
+        }
+        if (errorData.detail) {
+          setError({ ...error, general: errorData.detail });
+        }
       } else {
-        // Something happened in setting up the request that triggered the error
-        setError('An error occurred. Please try again later.');
+        setError({ ...error, general: 'An error occurred. Please try again later.' });
       }
     }
   };
@@ -63,9 +69,9 @@ const SignIn = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -76,6 +82,21 @@ const SignIn = () => {
                 required
                 value={formData.email}
                 variant="outlined"
+                error={!!error.email}
+                helperText={error.email}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Username"
+                name="username"
+                onChange={handleChange}
+                required
+                value={formData.username}
+                variant="outlined"
+                error={!!error.username}
+                helperText={error.username}
               />
             </Grid>
             <Grid item xs={12}>
@@ -88,27 +109,34 @@ const SignIn = () => {
                 type="password"
                 value={formData.password}
                 variant="outlined"
+                error={!!error.password}
+                helperText={error.password}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I want to receive inspiration, marketing promotions and updates via email."
               />
             </Grid>
           </Grid>
-          {error && (
+          {error.general && (
             <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-              {error}
+              {error.general}
             </Typography>
           )}
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign In
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign Up
           </Button>
-          <Grid container justifyContent="flex-end" mb={8}>
+          <Grid container justifyContent="flex-end" mb={6}>
             <Grid item>
-              <RouterLink to="/register" variant="body2">
-                Don't have an account? Sign up
+              <RouterLink to="/login" variant="body2">
+                Already have an account? Sign in
               </RouterLink>
             </Grid>
           </Grid>
@@ -118,4 +146,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

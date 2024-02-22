@@ -8,7 +8,7 @@ function Footer() {
         &copy; {new Date().getFullYear()} Your Contact Management App
       </Typography>
       <Typography variant="body2" gutterBottom>
-        Created with ❤️ by Your Name
+        Created with ❤️ by Md. Omar Faruk
       </Typography>
       <Typography variant="body2">
         <Link href="https://www.example.com" target="_blank" rel="noopener" color="inherit">

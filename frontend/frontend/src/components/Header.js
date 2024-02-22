@@ -8,7 +8,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6">
-          My Material-UI App
+            Contact Management
         </Typography>
       </Toolbar>
     </AppBar>

@@ -25,6 +25,12 @@ const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
   objectFit: 'cover',
 }));
 
+const StyledButtonGroup = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: '20px',
+});
+
 const SingleContact = () => {
   const { slug } = useParams();
   const [contact, setContact] = useState(null);
@@ -70,19 +76,30 @@ const SingleContact = () => {
             <strong>Address:</strong> {contact.address}
           </Typography>
         </CardContent>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleEdit}
-          component={RouterLink}
-          to={`/edit/${slug}`}
-        >
-          Edit
-        </Button>
+        <StyledButtonGroup>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleEdit}
+            component={RouterLink}
+            to={`/edit/${slug}`}
+            style={{ marginRight: '10px' }}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            component={RouterLink}
+            to={`/delete/${slug}`}
+          >
+            Delete
+          </Button>
+        </StyledButtonGroup>
       </StyledCard>
-      {/* <Link href="/" variant="body2">
+      <Link href="/" variant="body2">
         Back to Contacts
-      </Link> */}
+      </Link>
     </Container>
   );
 };
